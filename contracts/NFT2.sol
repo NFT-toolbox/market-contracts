@@ -7,21 +7,21 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 
-contract SIMPLETEST is ERC721, Ownable, ERC721Enumerable {
+contract NFT2 is ERC721, Ownable, ERC721Enumerable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
     
     address private NFTMarketplaceAddress;
 
-    constructor () ERC721("SIMPLETEST", "Test1") {}
+    constructor () ERC721("NFT2", "NFT2") {}
   
     function _baseURI() internal pure override returns (string memory) {
         return "ipfs://BASEURI";
     }
 
-    function mint(address to) public payable {
-        _safeMint(to, _tokenIdCounter.current());
+    function mint() public payable {
+        _safeMint(msg.sender, _tokenIdCounter.current());
         _tokenIdCounter.increment();
         setApprovalForAll(NFTMarketplaceAddress, true);
     }
