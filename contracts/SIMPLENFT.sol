@@ -11,19 +11,13 @@ contract SIMPLETEST is ERC721, Ownable, ERC721Enumerable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
-    // Base URI
-    string private _baseURIextended;
     
     address private NFTMarketplaceAddress;
 
     constructor () ERC721("SIMPLETEST", "Test1") {}
-    
-    function setBaseURI(string memory baseURI_) external onlyOwner {
-        _baseURIextended = baseURI_;
-    }
-
-    function _baseURI() internal view virtual override returns (string memory) {
-        return _baseURIextended;
+  
+    function _baseURI() internal pure override returns (string memory) {
+        return "ipfs://BASEURI";
     }
 
     function mint(address to) public payable {
