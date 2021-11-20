@@ -35,7 +35,7 @@ contract NFTMarket is ReentrancyGuard {
     uint indexed itemId,
     address indexed nftContract,
     uint256 indexed tokenId,
-    address seller,
+    address  seller,
     address owner,
     uint256 price,
     bool sold
@@ -132,14 +132,14 @@ contract NFTMarket is ReentrancyGuard {
     uint currentIndex = 0;
 
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].owner == msg.sender) {
+      if (idToMarketItem[i + 1].seller == msg.sender && idToMarketItem[i + 1].sold == false) {
         itemCount += 1;
       }
     }
 
     MarketItem[] memory items = new MarketItem[](itemCount);
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].owner == msg.sender) {
+      if (idToMarketItem[i + 1].seller == msg.sender  && idToMarketItem[i + 1].sold == false) {
         uint currentId = i + 1;
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;
@@ -171,5 +171,10 @@ contract NFTMarket is ReentrancyGuard {
       }
     }
     return items;
+  }
+
+  function cancelSale(uint256 _itemId) public nonReentrant{
+    require(idToMarketItem[_itemId].seller == msg.sender, 'Only creator of listing can cancell it');
+    idToMarketItem[_itemId].sold = true; 
   }
 }
